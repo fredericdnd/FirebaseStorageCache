@@ -2,8 +2,9 @@
 FIRStorage for iOS with caching and offline capabilities
 
 [![Version](https://img.shields.io/cocoapods/v/FirebaseStorageCache.svg?style=flat)](http://cocoapods.org/pods/FirebaseStorageCache)
-[![License](https://img.shields.io/cocoapods/l/FirebaseStorageCache.svg?style=flat)](http://cocoapods.org/pods/FirebaseStorageCache)
+[![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://raw.githubusercontent.com/onevcat/Kingfisher/master/LICENSE)
 [![Platform](https://img.shields.io/cocoapods/p/FirebaseStorageCache.svg?style=flat)](http://cocoapods.org/pods/FirebaseStorageCache)
+[![license](https://camo.githubusercontent.com/988c4fe7435163e2c97239a8c6482771451ffa26/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f53776966742d342e302532422d6f72616e67652e737667)](https://camo.githubusercontent.com/988c4fe7435163e2c97239a8c6482771451ffa26/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f53776966742d342e302532422d6f72616e67652e737667)
 
 ## Demo
 
