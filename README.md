@@ -1,7 +1,6 @@
 # FirebaseStorageCache
 FIRStorage for iOS with caching and offline capabilities
 
-[![CI Status](http://img.shields.io/travis/antonyharfield/FirebaseStorageCache.svg?style=flat)](https://travis-ci.org/antonyharfield/FirebaseStorageCache)
 [![Version](https://img.shields.io/cocoapods/v/FirebaseStorageCache.svg?style=flat)](http://cocoapods.org/pods/FirebaseStorageCache)
 [![License](https://img.shields.io/cocoapods/l/FirebaseStorageCache.svg?style=flat)](http://cocoapods.org/pods/FirebaseStorageCache)
 [![Platform](https://img.shields.io/cocoapods/p/FirebaseStorageCache.svg?style=flat)](http://cocoapods.org/pods/FirebaseStorageCache)
@@ -28,7 +27,7 @@ pod 'FirebaseStorageCache'
 ### Use the default shared cache
 
 ```swift
-let ref: FIRStorageReference = ...
+let ref: StorageReference = ...
 FirebaseStorageCache.main.get(storageReference: ref) { data in
   // do something with your file
 }
@@ -77,7 +76,7 @@ method of your disk caches to remove any old files:
 
 ```swift
 func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        FIRApp.configure()
+        FirebaseApp.configure()
         FirebaseStorageCache.main.prune()
         return true
     }
