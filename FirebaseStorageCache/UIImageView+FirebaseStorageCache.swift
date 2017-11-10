@@ -10,7 +10,7 @@ import FirebaseStorage
 
 extension UIImageView {
     
-    public func setImage(storageReference: StorageReference, cache: FirebaseStorageCache = .main) {
+    public func setImage(storageReference: StorageReference, cache: FirebaseStorageCache = .main, completionHandler: @escaping () -> ()) {
         cache.get(storageReference: storageReference) { data in
             if let data = data, let image = UIImage(data: data) {
                 self.image = image
