@@ -14,6 +14,7 @@ extension UIImageView {
         cache.get(storageReference: storageReference) { data in
             if let data = data, let image = UIImage(data: data) {
                 self.image = image
+                completionHandler()
             }
         }
     }
