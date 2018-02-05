@@ -4,4 +4,5 @@ target 'FirebaseStorageCache' do
   use_frameworks!
   pod 'Firebase/Core'
   pod 'Firebase/Storage'
+  pod 'RxSwift'
 end

@@ -8,6 +8,8 @@
 
 import Foundation
 import FirebaseStorage
+import RxSwift
+
 
 public class FirebaseStorageCache {
     
@@ -17,46 +19,50 @@ public class FirebaseStorageCache {
         self.cache = cache
     }
     
-    public func get(storageReference: StorageReference, completion: @escaping (_ object: Data?) -> Void) {
+    public func get(storageReference: StorageReference, completion: @escaping (_ object: Data?) -> Void) -> Observable<Data?> {
         
-        let filePath = self.filePath(storageReference: storageReference)
-        
-        cache.get(key: filePath, completion: { object in
-            if let object = object {
-                // Cache hit
-                DispatchQueue.main.async(execute: {
-                    completion(object)
-                })
-                return
-            }
-            // Cache miss: download file
-            storageReference.downloadURL(completion: { (url, error) in
-                guard error == nil else {
-                    print(error!.localizedDescription)
+        return Observable.create { observer in
+            let filePath = self.filePath(storageReference: storageReference)
+            
+            self.cache.get(key: filePath, completion: { object in
+                if let object = object {
+                    // Cache hit
                     DispatchQueue.main.async(execute: {
-                        completion(nil)
+                        observer.onNext(object)
                     })
                     return
                 }
-                URLSession.shared.dataTask(with: url!, completionHandler: { (data, response, error) in
-                    guard let httpURLResponse = response as? HTTPURLResponse,
-                        httpURLResponse.statusCode == 200,
-                        let data = data, error == nil else {
-                            print(error?.localizedDescription ?? "Error status code \(String(describing: (response as? HTTPURLResponse)?.statusCode))")
-                            DispatchQueue.main.async(execute: {
-                                completion(nil)
-                            })
-                            return
-                    }
-                    // Store result in cache
-                    self.cache.add(key: filePath, data: data, completion: {
+                // Cache miss: download file
+                storageReference.downloadURL(completion: { (url, error) in
+                    guard error == nil else {
+                        observer.onError(error!)
+                        print(error!.localizedDescription)
                         DispatchQueue.main.async(execute: {
-                            completion(data)
+                            observer.onNext(nil)
                         })
-                    })
-                }).resume()
+                        return
+                    }
+                    URLSession.shared.dataTask(with: url!, completionHandler: { (data, response, error) in
+                        guard let httpURLResponse = response as? HTTPURLResponse,
+                            httpURLResponse.statusCode == 200,
+                            let data = data, error == nil else {
+                                print(error?.localizedDescription ?? "Error status code \(String(describing: (response as? HTTPURLResponse)?.statusCode))")
+                                DispatchQueue.main.async(execute: {
+                                    observer.onNext(nil)
+                                })
+                                return
+                        }
+                        // Store result in cache
+                        self.cache.add(key: filePath, data: data, completion: {
+                            DispatchQueue.main.async(execute: {
+                                observer.onNext(data)
+                            })
+                        })
+                    }).resume()
+                })
             })
-        })
+            return Disposables.create()
+        }
     }
     
     public func remove(storageReference: StorageReference) {
